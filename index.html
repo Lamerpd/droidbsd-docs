@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>droidBSD — BSD for Mobile Devices</title>
+  <meta name="description" content="droidBSD is an experimental BSD-based operating system project for mobile devices, using existing Linux kernel and hardware support while providing a BSD userspace.">
+  <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="GCym0FbeURpxGV-R8nwj-PsiVgphVVZtdf8Ul1s8u5o" />
+  <link rel="canonical" href="https://droidbsd.surge.sh/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://droidbsd.surge.sh/">
+  <meta property="og:title" content="droidBSD — BSD for Mobile Devices">
+  <meta property="og:description" content="droidBSD is an experimental BSD-based operating system project for mobile devices, using existing Linux kernel and hardware support while providing a BSD userspace.">
+  <meta property="og:image" content="https://droidbsd.surge.sh/images/mascot.png">
+  <meta property="og:image:alt" content="Berry, the official droidBSD mascot — a gray mouse holding cheese">
+  <meta property="og:site_name" content="droidBSD">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="droidBSD — BSD for Mobile Devices">
+  <meta name="twitter:description" content="droidBSD is an experimental BSD-based operating system project for mobile devices, using existing Linux kernel and hardware support while providing a BSD userspace.">
+  <meta name="twitter:image" content="https://droidbsd.surge.sh/images/mascot.png">
+  <meta name="twitter:image:alt" content="Berry, the official droidBSD mascot — a gray mouse holding cheese">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <button class="menu-toggle" id="menu-toggle" title="Menu">☰</button>
+      <a href="#home" class="logo" data-section="home">
+        <span class="logo-icon">dB</span>
+        <span>droidBSD</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="search-toggle" id="search-toggle" title="Search (Ctrl+K)">🔍</button>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle theme">☀️</button>
+      <div class="mascot-container" title="Berry — official droidBSD mascot">
+        <img src="images/mascot.png" alt="Berry, the droidBSD mascot — a friendly gray mouse holding cheese">
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-box">
+      <input type="text" class="search-input" id="search-input" placeholder="Search documentation..." autocomplete="off">
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav>
+      <ul class="sidebar-nav">
+        <li class="nav-section">
+          <div class="nav-section-title">Getting Started</div>
+          <a href="#home" class="nav-link active" data-section="home">Home</a>
+          <a href="#what-is" class="nav-link" data-section="what-is">What is droidBSD?</a>
+          <a href="#goals" class="nav-link" data-section="goals">Project Goals</a>
+        </li>
+        <li class="nav-section">
+          <div class="nav-section-title">Architecture</div>
+          <a href="#architecture" class="nav-link" data-section="architecture">Architecture Overview</a>
+          <a href="#how-it-works" class="nav-link" data-section="how-it-works">How It Works</a>
+          <a href="#linux-kernel" class="nav-link" data-section="linux-kernel">Linux Kernel Layer</a>
+          <a href="#libdt" class="nav-link" data-section="libdt">libdt</a>
+          <a href="#device-tree" class="nav-link" data-section="device-tree">Device Tree & Hardware</a>
+          <a href="#gpu" class="nav-link" data-section="gpu">GPU / Compatibility Layer</a>
+          <a href="#userspace" class="nav-link" data-section="userspace">BSD Userspace</a>
+          <a href="#boot" class="nav-link" data-section="boot">Boot Process</a>
+          <a href="#gui" class="nav-link" data-section="gui">Graphical Interface</a>
+        </li>
+        <li class="nav-section">
+          <div class="nav-section-title">Devices & Install</div>
+          <a href="#compatibility" class="nav-link" data-section="compatibility">Device Compatibility</a>
+          <a href="#supported" class="nav-link" data-section="supported">Supported Devices</a>
+          <a href="#installation" class="nav-link" data-section="installation">Installation</a>
+          <a href="#testing" class="nav-link" data-section="testing">Testing Before Flashing</a>
+        </li>
+        <li class="nav-section">
+          <div class="nav-section-title">Development</div>
+          <a href="#development" class="nav-link" data-section="development">Development</a>
+          <a href="#contributing" class="nav-link" data-section="contributing">Contributing</a>
+          <a href="#building" class="nav-link" data-section="building">Building System Images</a>
+          <a href="#troubleshooting" class="nav-link" data-section="troubleshooting">Troubleshooting</a>
+        </li>
+        <li class="nav-section">
+          <div class="nav-section-title">Project</div>
+          <a href="#faq" class="nav-link" data-section="faq">FAQ</a>
+          <a href="#roadmap" class="nav-link" data-section="roadmap">Roadmap</a>
+          <a href="#safety" class="nav-link" data-section="safety">Safety / Warnings</a>
+          <a href="#mascot" class="nav-link" data-section="mascot">Mascot / Berry</a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- HOME -->
+    <section id="home" class="section active">
+      <div class="hero">
+        <div class="hero-mascot">
+          <img src="images/mascot.png" alt="Berry, the official droidBSD mascot">
+        </div>
+        <h1>droidBSD</h1>
+        <p class="lead">An experimental BSD-based operating system for mobile phones.</p>
+        <p>Genuine BSD userspace on mobile hardware — without rewriting every driver from scratch.</p>
+      </div>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">⚠️ Experimental Project — High Risk</div>
+        <p>droidBSD is experimental software. Installing or testing it can permanently damage (“brick”) your device. Always back up data and test thoroughly before any permanent installation. Proceed at your own risk.</p>
+      </div>
+
+      <h2>What you will find here</h2>
+      <p>This documentation explains the goals, architecture, and development approach of droidBSD. It is intended for people familiar with Linux, Android, or BSD who want to understand how the project works and how they can contribute.</p>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <h4>Current Focus</h4>
+          <p>Compatibility layer + BSD userspace on existing Linux kernels</p>
+        </div>
+        <div class="status-card">
+          <h4>Status</h4>
+          <p><span class="badge badge-experimental">Experimental</span></p>
+        </div>
+        <div class="status-card">
+          <h4>Long-term Goal</h4>
+          <p>More independent / bare-metal direction</p>
+        </div>
+        <div class="status-card">
+          <h4>Mascot</h4>
+          <p>Berry 🧀</p>
+        </div>
+      </div>
+
+      <div class="berry-note">
+        <img src="images/mascot.png" alt="Berry">
+        <div>Berry says: “I like cheese almost as much as I like clean BSD userland. Almost.”</div>
+      </div>
+    </section>
+
+    <!-- WHAT IS -->
+    <section id="what-is" class="section">
+      <h1>What is droidBSD?</h1>
+      <p class="lead">droidBSD is an experimental project that aims to bring a genuine BSD operating-system environment to mobile phones.</p>
+
+      <p>The project does <strong>not</strong> try to create a completely independent hardware support stack from scratch. Instead, it deliberately reuses the existing Linux kernel and hardware support already present on many Android devices. This dramatically reduces the amount of reverse-engineering and driver work required in the early stages.</p>
+
+      <h2>Core idea</h2>
+      <p>Android itself is <strong>not</strong> the user-facing operating system. The Android userspace (ART, Zygote, the traditional Android application stack, Google Apps, and related components) is intended to be removed or replaced. What remains is the Linux kernel acting as a low-level compatibility and hardware-support layer underneath a FreeBSD-based userspace.</p>
+
+      <h2>Conceptual stack</h2>
+      <div class="arch-layer">
+        <div class="layer-box">Hardware (phone SoC, display, radios, etc.)</div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer-box">Existing Linux kernel + device drivers / firmware</div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer-box">Compatibility / bridge layer</div>
+        <div class="layer-arrow">↓</div>
+        <div class="layer-box highlight">droidBSD (FreeBSD-based userland + system components)</div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Important distinction</div>
+        <p>droidBSD is <strong>not</strong> “BSD running inside Android.” The goal is to replace the Android userspace, not to run as an application or container on top of a full Android system.</p>
+      </div>
+
+      <h2>Why this approach?</h2>
+      <p>Writing complete, independent hardware support for modern mobile SoCs is an enormous undertaking. By reusing kernels and drivers that already understand a given phone’s hardware, the project can focus on the userspace, system services, and user experience much earlier.</p>
+      <p>A fully independent / bare-metal implementation remains a long-term aspiration, but it is not the current practical path.</p>
+    </section>
+
+    <!-- GOALS -->
+    <section id="goals" class="section">
+      <h1>Project Goals</h1>
+
+      <h2>Primary goals</h2>
+      <ul>
+        <li>Provide a genuine BSD userland (shell, utilities, system tools, services) on mobile hardware.</li>
+        <li>Replace the Android userspace rather than merely theming or modifying it.</li>
+        <li>Reuse existing Linux kernel and hardware support to make early development feasible.</li>
+        <li>Develop tools (especially <code>libdt</code>) that help adapt system images to different devices with less manual work.</li>
+        <li>Offer a lightweight, purpose-built graphical interface suitable for phones.</li>
+      </ul>
+
+      <h2>Non-goals (current phase)</h2>
+      <ul>
+        <li>Claiming universal compatibility with every Android phone.</li>
+        <li>Pretending that a full bare-metal port already exists.</li>
+        <li>Running the full Android application stack or Google services.</li>
+        <li>Providing production-ready daily-driver images at this stage.</li>
+      </ul>
+
+      <h2>Long-term direction</h2>
+      <p>Over time the project may move toward greater independence from the Linux kernel and Android-era components. That path is acknowledged as desirable but is deliberately secondary to making a usable BSD environment available on real hardware first.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Honesty policy</div>
+        <p>Features that are not yet implemented are clearly marked as <span class="badge badge-planned">Planned</span>, <span class="badge badge-experimental">Experimental</span>, <span class="badge badge-dev">Under development</span>, or <span class="badge badge-device">Device-dependent</span>.</p>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="section">
+      <h1>Architecture Overview</h1>
+      <p class="lead">droidBSD is structured as a layered system that deliberately separates hardware support from the BSD userspace.</p>
+
+      <h2>High-level view</h2>
+      <div class="arch-diagram">Hardware
+    │
+    ▼
+┌─────────────────────────────────────┐
+│  Linux kernel + existing drivers    │
+│  (display, touch, Wi-Fi, storage…)  │
+└─────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────┐
+│  Compatibility / bridge layer       │
+│  (libdt adaptations, possible       │
+│   hybris-style components for GPU)  │
+└─────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────┐
+│  droidBSD                           │
+│  • FreeBSD-based userland           │
+│  • Custom init & services           │
+│  • Graphical interface              │
+└─────────────────────────────────────┘</div>
+
+      <h2>Key principles</h2>
+      <ul>
+        <li><strong>Reuse where it saves years of work</strong> — the Linux kernel already knows how to talk to the phone’s hardware on many devices.</li>
+        <li><strong>Replace the userspace</strong> — ART, Zygote, and the classic Android app stack are not part of the intended droidBSD environment.</li>
+        <li><strong>Adapt rather than hard-code</strong> — <code>libdt</code> is intended to inspect device information and adapt the system image instead of requiring a fully hand-written port for every phone.</li>
+        <li><strong>Be explicit about limitations</strong> — proprietary firmware, bootloader behavior, GPU stacks, and many other factors can still block support.</li>
+      </ul>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="section">
+      <h1>How It Works</h1>
+      <p>The intended high-level workflow for bringing droidBSD to a device is:</p>
+
+      <ol>
+        <li><strong>Identify the device</strong> — determine model, SoC, and available kernel / device-tree information.</li>
+        <li><strong>Back up important data</strong> — always.</li>
+        <li><strong>Extract / inspect hardware information</strong> — Device Tree, kernel configuration, and related data.</li>
+        <li><strong>Let libdt prepare / adapt the system image</strong> — <span class="badge badge-dev">Under development</span></li>
+        <li><strong>Test using a temporary / non-permanent method</strong> — <span class="badge badge-device">Device-dependent</span> / <span class="badge badge-planned">Planned</span></li>
+        <li><strong>Verify boot and critical hardware</strong> — display, touch, storage, networking, etc.</li>
+        <li><strong>Only then consider permanent installation</strong> — after successful testing.</li>
+      </ol>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Temporary testing methods</div>
+        <p>Specific temporary boot mechanisms (fastboot boot, recovery-based testing, ramdisk approaches, etc.) are <strong>device-dependent</strong> and still under definition. The documentation will not invent a single universal method. Always follow device-specific guidance when it becomes available.</p>
+      </div>
+
+      <p>This workflow is designed to minimize the risk of permanent damage during early experimentation.</p>
+    </section>
+
+    <!-- LINUX KERNEL -->
+    <section id="linux-kernel" class="section">
+      <h1>Linux Kernel Layer</h1>
+      <p>On supported target devices the existing Linux kernel is retained as the foundation.</p>
+
+      <h2>Why keep the Linux kernel?</h2>
+      <ul>
+        <li>It already contains drivers and configuration for the phone’s display controller, touchscreen, storage, Wi-Fi, Bluetooth, power management, and other hardware.</li>
+        <li>Creating equivalent support from scratch for modern mobile SoCs is a multi-year effort for each platform family.</li>
+        <li>Using a known-working kernel lets the project concentrate on userspace and system design.</li>
+      </ul>
+
+      <h2>What the kernel provides</h2>
+      <ul>
+        <li>Hardware abstraction and device drivers</li>
+        <li>Process scheduling, memory management, and system-call interface</li>
+        <li>Filesystem support and storage access</li>
+        <li>Networking stack</li>
+        <li>Power-management interfaces (to the extent implemented by the vendor kernel)</li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Scope</div>
+        <p>Exact hardware support varies by device and by the particular kernel build shipped with that device (or community ports of it). droidBSD does not magically add missing drivers.</p>
+      </div>
+    </section>
+
+    <!-- LIBDT -->
+    <section id="libdt" class="section">
+      <h1>libdt</h1>
+      <p><code>libdt</code> is a component under development whose purpose is to inspect a target device’s hardware information and adapt a droidBSD system image accordingly.</p>
+
+      <h2>Intended responsibilities</h2>
+      <ul>
+        <li>Read and interpret Device Tree data (and related kernel / device configuration).</li>
+        <li>Detect relevant hardware characteristics of the phone.</li>
+        <li>Patch or generate device-specific configuration for the droidBSD image.</li>
+        <li>Help produce a system that can be tested on that particular device with less manual porting work.</li>
+      </ul>
+
+      <h2>What libdt is not</h2>
+      <ul>
+        <li>It is not a guarantee of compatibility with every phone.</li>
+        <li>It cannot overcome missing proprietary firmware, incompatible bootloaders, or fundamental hardware differences.</li>
+        <li>It does not eliminate the need for testing and possible manual adjustments.</li>
+      </ul>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Status</div>
+        <p><code>libdt</code> is <span class="badge badge-dev">Under development</span>. Its exact interfaces, capabilities, and limitations will be documented as the implementation matures. Do not assume any particular automation feature is already complete.</p>
+      </div>
+    </section>
+
+    <!-- DEVICE TREE -->
+    <section id="device-tree" class="section">
+      <h1>Device Tree & Hardware Detection</h1>
+      <p>Most modern ARM-based mobile devices describe their hardware using a Device Tree (DT). The Device Tree Blob (DTB) and related source (DTS) tell the kernel which peripherals exist, how they are connected, and which drivers should bind to them.</p>
+
+      <h2>Role in droidBSD</h2>
+      <p>Because droidBSD reuses an existing Linux kernel, the Device Tree that already works with that kernel is a primary source of hardware information. <code>libdt</code> is intended to consume this information (and other available configuration) so that the higher-level system can be adapted without writing a full board-support package by hand for every phone.</p>
+
+      <h2>Limitations</h2>
+      <ul>
+        <li>Not every relevant detail is always present or accurate in the Device Tree.</li>
+        <li>Proprietary firmware, closed-source driver modules, and bootloader constraints live outside the DT.</li>
+        <li>Different kernel versions and vendor trees can expose different interfaces.</li>
+      </ul>
+
+      <p>Hardware detection and adaptation remain <span class="badge badge-device">Device-dependent</span> and <span class="badge badge-experimental">Experimental</span>.</p>
+    </section>
+
+    <!-- GPU -->
+    <section id="gpu" class="section">
+      <h1>GPU / Compatibility Layer</h1>
+      <p>Graphics on mobile SoCs are frequently tied to proprietary user-space components and interfaces that were designed around Android.</p>
+
+      <h2>Approach</h2>
+      <p>When necessary, a compatibility layer inspired by projects such as libhybris may be used. The goal is to allow existing low-level hardware components (especially GPU-related) to communicate with the non-Android userspace, without bringing up the entire Android operating system.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Clarification</div>
+        <p>This is reuse of selected low-level binary components and interfaces, not “running Android.” The Android application framework, ART, and related userspace services are not part of the intended droidBSD stack.</p>
+      </div>
+
+      <p>Exact support for accelerated graphics is <span class="badge badge-device">Device-dependent</span> and currently <span class="badge badge-experimental">Experimental</span> / <span class="badge badge-planned">Planned</span>.</p>
+    </section>
+
+    <!-- USERSPACE -->
+    <section id="userspace" class="section">
+      <h1>BSD Userspace</h1>
+      <p>The userspace is intended to be genuine BSD software, primarily based on FreeBSD components and conventions.</p>
+
+      <h2>Expected components</h2>
+      <ul>
+        <li>BSD shell (e.g. sh / tcsh or similar)</li>
+        <li>Standard BSD userland utilities</li>
+        <li>System administration tools</li>
+        <li>Custom droidBSD services</li>
+        <li>A custom initialization process (not Android’s Zygote / ART startup)</li>
+        <li>A custom graphical interface</li>
+      </ul>
+
+      <p>The project aims to replace the Android userspace rather than simply put a different interface on top of Android’s existing services.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Status</div>
+        <p>Userspace integration, service design, and the precise set of packages are still under active development. Many pieces remain <span class="badge badge-planned">Planned</span> or <span class="badge badge-experimental">Experimental</span>.</p>
+      </div>
+    </section>
+
+    <!-- BOOT -->
+    <section id="boot" class="section">
+      <h1>Boot Process</h1>
+      <p>In a finished system, droidBSD will start its own initialization and userspace environment instead of the normal Android boot path that leads to Zygote and ART.</p>
+
+      <h2>Technical difficulty</h2>
+      <p>Changing the boot → userspace transition on a phone is technically difficult and potentially dangerous, especially while the project is still experimental. Bootloader constraints, verified-boot mechanisms, partition layouts, and initramfs / ramdisk handling all vary by device.</p>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">⚠ Risk</div>
+        <p>Incorrect changes to the boot process can render a device unbootable. Always prefer temporary testing methods before any permanent modification of boot partitions.</p>
+      </div>
+
+      <p>Details of the final init system and early boot sequence are <span class="badge badge-dev">Under development</span> and will be documented as they stabilize.</p>
+    </section>
+
+    <!-- GUI -->
+    <section id="gui" class="section">
+      <h1>Graphical Interface</h1>
+      <p>droidBSD will include its own lightweight graphical interface designed for mobile hardware.</p>
+
+      <ul>
+        <li>It may share some visual conventions with mobile systems (status bar, navigation gestures, etc.) because the target form factor is a phone.</li>
+        <li>It is <strong>not</strong> Android and should not be presented as a reskinned Android UI.</li>
+        <li>The exact toolkit, compositor, and application model are still being defined.</li>
+      </ul>
+
+      <p>Status: <span class="badge badge-planned">Planned</span> / <span class="badge badge-experimental">Experimental</span>.</p>
+    </section>
+
+    <!-- COMPATIBILITY -->
+    <section id="compatibility" class="section">
+      <h1>Device Compatibility</h1>
+      <p>droidBSD explicitly does <strong>not</strong> guarantee compatibility with every Android phone.</p>
+
+      <p>Mobile hardware varies widely even among devices that use similar CPU architectures. Possible obstacles include:</p>
+      <ul>
+        <li>SoC differences</li>
+        <li>GPU differences and proprietary graphics stacks</li>
+        <li>Proprietary firmware blobs</li>
+        <li>Kernel version and configuration differences</li>
+        <li>Device Tree differences</li>
+        <li>Display controllers and panel initialization</li>
+        <li>Touchscreen hardware and firmware</li>
+        <li>Wi-Fi / Bluetooth chips</li>
+        <li>Storage (eMMC / UFS) configuration</li>
+        <li>Bootloader behavior and unlocking restrictions</li>
+        <li>Power-management hardware and drivers</li>
+        <li>Camera hardware and ISP pipelines</li>
+        <li>Vendor-specific closed-source drivers</li>
+      </ul>
+
+      <div class="berry-note">
+        <img src="images/mascot.png" alt="Berry">
+        <div>Berry’s tip: “If the cheese doesn’t fit the hole, forcing it usually makes a mess. Same with phones.”</div>
+      </div>
+
+      <p>Community contributions that add support for additional devices are highly welcome. See the Contributing section.</p>
+    </section>
+
+    <!-- SUPPORTED DEVICES -->
+    <section id="supported" class="section">
+      <h1>Supported Devices</h1>
+      <p>At the current stage of the project there is no published list of officially supported devices.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Status</div>
+        <p>Device support is <span class="badge badge-experimental">Experimental</span> and will be documented as concrete ports become available and are tested. No device should be considered “supported” until explicit documentation and testing instructions exist for it.</p>
+      </div>
+
+      <p>If you are interested in bringing up a particular phone, the best approach is to:</p>
+      <ol>
+        <li>Check whether a usable Linux kernel and Device Tree already exist for the device.</li>
+        <li>Join the community discussion (channels will be announced when ready).</li>
+        <li>Help document hardware details and test early images.</li>
+      </ol>
+    </section>
+
+    <!-- INSTALLATION -->
+    <section id="installation" class="section">
+      <h1>Installation</h1>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">🚨 Critical Warning</div>
+        <p>Experimental operating-system images can brick a device. Permanent installation should only be considered after successful temporary testing and after you fully understand the recovery options for your specific phone.</p>
+      </div>
+
+      <h2>Recommended high-level workflow</h2>
+      <ol>
+        <li>Identify the exact device model.</li>
+        <li>Back up all important data.</li>
+        <li>Extract and inspect the device’s hardware information (Device Tree, kernel, etc.).</li>
+        <li>Use <code>libdt</code> (when available) to prepare / adapt a system image.</li>
+        <li>Test the image with a temporary / non-destructive method.</li>
+        <li>Verify that the device boots and that critical hardware functions.</li>
+        <li>Only then consider permanent flashing.</li>
+      </ol>
+
+      <p>Specific flashing commands, partition layouts, and recovery procedures are <span class="badge badge-device">Device-dependent</span> and will be documented per device when ready. No universal install script is claimed at this time.</p>
+    </section>
+
+    <!-- TESTING -->
+    <section id="testing" class="section">
+      <h1>Testing Before Flashing</h1>
+      <p>Testing without permanently modifying the device is the safest way to evaluate compatibility.</p>
+
+      <h2>Principles</h2>
+      <ul>
+        <li>Prefer methods that do not overwrite the main system or boot partitions until you are confident.</li>
+        <li>Have a known-working recovery / fastboot environment ready.</li>
+        <li>Document what works and what fails so the community can benefit.</li>
+      </ul>
+
+      <div class="callout callout-warning">
+        <div class="callout-title">⚠ Implementation status</div>
+        <p>Concrete temporary boot mechanisms are still being defined and will often be device-specific. They are marked <span class="badge badge-planned">Planned</span> or <span class="badge badge-device">Device-dependent</span> until documented. Do not invent or assume a particular method (for example a universal “fastboot boot” workflow) unless it has been confirmed for that device.</p>
+      </div>
+    </section>
+
+    <!-- DEVELOPMENT -->
+    <section id="development" class="section">
+      <h1>Development</h1>
+      <p>droidBSD is an open-source project in early experimental stages. Development currently focuses on:</p>
+      <ul>
+        <li>The compatibility / bridge approach using existing Linux kernels</li>
+        <li><code>libdt</code> and hardware adaptation tooling</li>
+        <li>BSD userspace integration</li>
+        <li>Early boot and init work</li>
+        <li>A lightweight graphical environment</li>
+      </ul>
+
+      <p>Source repositories, issue trackers, and contribution guidelines will be published as the project infrastructure is set up. Until then, treat any code or images you encounter as highly experimental.</p>
+    </section>
+
+    <!-- CONTRIBUTING -->
+    <section id="contributing" class="section">
+      <h1>Contributing</h1>
+      <p>Community help is essential, especially for device-specific work.</p>
+
+      <h2>Ways to contribute</h2>
+      <ul>
+        <li>Document hardware details of phones you own (SoC, kernel version, Device Tree availability, unlock status, etc.).</li>
+        <li>Test early images when they become available and report results clearly.</li>
+        <li>Help improve <code>libdt</code> and adaptation logic.</li>
+        <li>Work on userspace components, services, or the graphical interface.</li>
+        <li>Improve documentation and translate it (when translation efforts begin).</li>
+      </ul>
+
+      <div class="berry-note">
+        <img src="images/mascot.png" alt="Berry">
+        <div>Berry appreciates every contribution — even the small ones. Cheese optional but welcome.</div>
+      </div>
+
+      <p>Contribution channels and coding standards will be announced together with the public repositories.</p>
+    </section>
+
+    <!-- BUILDING -->
+    <section id="building" class="section">
+      <h1>Building System Images</h1>
+      <p>Build instructions for producing droidBSD system images are <span class="badge badge-planned">Planned</span>.</p>
+
+      <p>When available, the documentation will cover:</p>
+      <ul>
+        <li>Required host tools and dependencies</li>
+        <li>How to obtain and prepare the base FreeBSD userland components</li>
+        <li>Integration with a target device’s kernel and Device Tree</li>
+        <li>Use of <code>libdt</code> for adaptation</li>
+        <li>Producing images suitable for temporary testing versus permanent installation</li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Note</div>
+        <p>No complete public build system or image-generation pipeline is claimed at this time. Any early developer builds should be treated as internal experiments.</p>
+      </div>
+    </section>
+
+    <!-- TROUBLESHOOTING -->
+    <section id="troubleshooting" class="section">
+      <h1>Troubleshooting</h1>
+      <p>Because the project is experimental, most issues are currently expected rather than exceptional.</p>
+
+      <h2>General advice</h2>
+      <ul>
+        <li>Confirm that a working Linux kernel and Device Tree already exist for your device.</li>
+        <li>Keep a known-good recovery or fastboot environment available.</li>
+        <li>Collect logs (kernel messages, early userspace output) whenever possible.</li>
+        <li>Search existing reports before assuming a unique problem.</li>
+      </ul>
+
+      <p>Specific troubleshooting guides will be added as common failure modes are identified and documented.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <h1>FAQ</h1>
+
+      <div class="expandable">
+        <div class="expandable-header">Is droidBSD just Android with a different UI? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>No. The goal is to replace the Android userspace (ART, Zygote, the normal Android application stack, etc.) with a FreeBSD-based environment. The Linux kernel is retained primarily as a hardware-support and compatibility layer.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header">Does it run Android apps? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>Running Android applications is not a current goal of the project. The intended userspace is BSD, not the Android application framework.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header">Will it work on my phone? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>There is no guarantee. Compatibility depends on many factors (kernel availability, Device Tree, proprietary components, bootloader, etc.). The project explicitly does not claim universal support.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header">Is there a full bare-metal version already? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>No. A more independent / bare-metal direction is a long-term aspiration. The current practical approach reuses existing Linux kernels and hardware support.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header">Can this brick my device? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>Yes. Experimental operating-system work on phones carries a real risk of permanent damage. Always back up data and prefer temporary testing methods before permanent installation.</p>
+        </div>
+      </div>
+
+      <div class="expandable">
+        <div class="expandable-header">Who is Berry? <span class="expandable-icon">▼</span></div>
+        <div class="expandable-content">
+          <p>Berry is the official project mascot — a mouse who likes cheese. You will see Berry in non-critical sections of the documentation. Safety warnings remain completely serious.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="section">
+      <h1>Roadmap</h1>
+      <p>The following is a high-level, non-binding outline of intended directions. Dates and priorities may change.</p>
+
+      <h2>Near term (experimental phase)</h2>
+      <ul>
+        <li>Further development of the compatibility approach and <code>libdt</code></li>
+        <li>Basic BSD userspace bring-up on selected test devices</li>
+        <li>Early boot / init experiments</li>
+        <li>Documentation of hardware requirements and testing procedures</li>
+      </ul>
+
+      <h2>Medium term</h2>
+      <ul>
+        <li>More complete userspace and service infrastructure</li>
+        <li>Graphical interface prototypes</li>
+        <li>Broader (but still limited) device experimentation</li>
+        <li>Public repositories and contribution process</li>
+      </ul>
+
+      <h2>Long term</h2>
+      <ul>
+        <li>Evaluation of greater independence from Linux-kernel dependencies</li>
+        <li>Possible bare-metal or alternative-kernel explorations</li>
+        <li>Maturation of the overall system toward usable daily experimentation</li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ Note</div>
+        <p>Nothing on this roadmap should be treated as a commitment or a promise of delivery dates. The project is experimental.</p>
+      </div>
+    </section>
+
+    <!-- SAFETY -->
+    <section id="safety" class="section">
+      <h1>Safety / Warnings</h1>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">🚨 Read this carefully</div>
+        <p>Working with experimental operating-system images on mobile devices can result in a permanently unusable (“bricked”) phone. You accept full responsibility for any damage to your hardware, data loss, or other consequences.</p>
+      </div>
+
+      <h2>Mandatory precautions</h2>
+      <ul>
+        <li>Back up all personal data before any experimentation.</li>
+        <li>Understand how to restore the original firmware on your specific device.</li>
+        <li>Prefer temporary / non-permanent testing methods whenever they exist.</li>
+        <li>Do not flash images to critical partitions until you have verified basic functionality.</li>
+        <li>Keep a working computer and the necessary cables / unlock tools available.</li>
+      </ul>
+
+      <h2>What the project does not provide</h2>
+      <ul>
+        <li>Any warranty or guarantee of safety</li>
+        <li>A universal unbrick method</li>
+        <li>Support for locked bootloaders or devices that cannot be recovered</li>
+      </ul>
+
+      <p>If you are not comfortable with the risk of permanently losing a device, do not experiment with droidBSD images.</p>
+    </section>
+
+    <!-- MASCOT -->
+    <section id="mascot" class="section">
+      <h1>Project Mascot / Berry</h1>
+      <div style="text-align:center; margin: 2rem 0;">
+        <img src="images/mascot.png" alt="Berry — official droidBSD mascot" style="max-width:220px; width:100%;">
+      </div>
+      <p>Meet <strong>Berry</strong>, the official mascot of droidBSD.</p>
+      <p>Berry is a friendly mouse (or rat, depending on how you look at it) who is rarely seen without a piece of cheese. The character reflects the project’s desire to stay a little playful even while tackling serious systems work.</p>
+
+      <h2>Usage guidelines</h2>
+      <ul>
+        <li>Berry appears in non-critical documentation sections and light-hearted notes.</li>
+        <li>Technical accuracy and safety warnings always take priority over humor.</li>
+        <li>The mascot image provided by the project should be used as-is; do not redesign or replace it.</li>
+      </ul>
+
+      <div class="berry-note">
+        <img src="images/mascot.png" alt="Berry">
+        <div>“I may be small, but I believe in big userlands and properly adapted Device Trees.” — Berry</div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>droidBSD Documentation — Experimental open-source project</p>
+      <p>All technical content written in English. Mascot: Berry 🧀</p>
+    </footer>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
